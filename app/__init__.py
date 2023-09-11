@@ -16,6 +16,7 @@ login = LoginManager(app)
 login.login_view = 'login'
 bootstrap = Bootstrap(app)
 
+#Vorlage Quelle: Miguel Grinnberg. The Flask Mega-Tutorial Part XXIII: Application Programming Interfaces (APIs).
 from app.api import bp as api_bp
 app.register_blueprint(api_bp, url_prefix='/api')
 

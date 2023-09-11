@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
+#Quelle: Miguel Grinnberg. The Flask Mega-Tutorial Part XXIII: Application Programming Interfaces (APIs).
     @staticmethod
     def to_collection_dict(query, page, per_page, endpoint, **kwargs):
         resources = query.paginate(page=page, per_page=per_page,
@@ -39,7 +40,8 @@ class User(UserMixin, db.Model):
         }
         return data
         
-
+#Vorlage Quelle: Miguel Grinnberg. The Flask Mega-Tutorial Part XXIII: Application Programming Interfaces (APIs).
+#Angepasster Code durch Gioele Parenti
     def to_dict(self, include_email=False):
         data = {
             'id': self.id,
@@ -85,7 +87,7 @@ class User(UserMixin, db.Model):
 def load_user(id):
     return User.query.get(int(id))
 
-
+#Eigenentwicklung
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(200))
@@ -93,6 +95,8 @@ class Todo(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', name='fk_todo_user_id'))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
+#Vorlage Quelle: Miguel Grinnberg. The Flask Mega-Tutorial Part XXIII: Application Programming Interfaces (APIs).
+#Angepasster Code durch Gioele Parenti
     def to_dict(self):
         data = {
             'id': self.id,

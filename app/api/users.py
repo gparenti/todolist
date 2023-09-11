@@ -3,7 +3,8 @@ from flask import jsonify, request, url_for
 from app.models import Todo, User
 from app.api.errors import bad_request
 from app import db
-
+#Quelle: Miguel Grinnberg. The Flask Mega-Tutorial Part XXIII: Application Programming Interfaces (APIs).
+#Vorlage durch Quelle, angepasster Code ist Eigenentwicklung.
 
 @bp.route('/users/<int:id>', methods=['GET'])
 def get_user(id):

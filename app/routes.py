@@ -8,7 +8,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
 
-#Vorlage aus dem Unterricht, aber selbst angepasst
+#Eigenentwicklung
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
@@ -26,7 +26,7 @@ def add():
     todo_item = request.form['todoitem'].strip() 
     #Eigenentwicklung
     if not todo_item:  # Check if the input is empty
-        flash('Task cannot be empty!')  # Info for the User
+        flash('Task cannot be empty!')  # Info for User
         return redirect(url_for('index'))
     todo = Todo(body=request.form['todoitem'], complete=False, user_id=current_user.id)
     db.session.add(todo)
@@ -99,6 +99,7 @@ def before_request():
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
 
+#Übernommen aus den Beispielen
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
