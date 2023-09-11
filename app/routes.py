@@ -118,33 +118,42 @@ def edit_profile():
 @app.route('/complete/<id>', methods=['GET','POST'])
 @login_required
 def complete(id):
-   todo = Todo.query.filter_by(id=int(id)).first()
-   todo.complete = True
-   todo.timestamp = datetime.utcnow()
-   db.session.commit()
-    
-   return redirect(url_for('index'))
+    todo = Todo.query.filter_by(id=int(id)).first()
 
+    # Check if the user trying to complete the task is the task's owner
+    if todo.user_id == current_user.id:
+        todo.complete = True
+        todo.timestamp = datetime.utcnow()
+        db.session.commit()
+    else:
+        flash("You don't have permission to complete this task.")
+
+
+    return redirect(url_for('index'))
 
 #Eigenentwicklung
 @app.route('/notcomplete/<id>', methods=['GET','POST'])
 @login_required
 def notcomplete(id):
     todo = Todo.query.filter_by(id=int(id)).first()
-    todo.complete = False
-    todo.timestamp = datetime.utcnow()
-    db.session.commit()
-  
+    if todo.user_id == current_user.id:
+        todo.complete = False
+        todo.timestamp = datetime.utcnow()
+        db.session.commit()
+    else:
+        flash("You don't have permission to complete this task. It's not yours!")
     return redirect(url_for('index'))
 
 #Eigenentwicklung
 @app.route('/deletetask/<id>', methods=['GET','POST'])
 @login_required
 def deletetask(id):
-
     todo = Todo.query.filter_by(id=int(id)).first()
-    db.session.delete(todo)
-    db.session.commit()
+    if todo.user_id == current_user.id:
+        db.session.delete(todo)
+        db.session.commit()
+    else:
+        flash("You don't have permission to delete this task. It's not yours!")
     return redirect(url_for('index'))
 
 #Eigenentwicklung
@@ -153,11 +162,13 @@ def deletetask(id):
 def edittask(id):
 
     todo = Todo.query.filter_by(id=int(id)).first()
-    if request.method == 'POST':
-        # Update the task with the new data
-        todo.body = request.form.get('edited_task')
-        db.session.commit()
-        flash('Task has been updated.')
-        return redirect(url_for('index'))
-
+    if todo.user_id == current_user.id:
+        if request.method == 'POST':
+            # Update the task with the new data
+            todo.body = request.form.get('edited_task')
+            db.session.commit()
+            flash('Task has been updated.')
+            return redirect(url_for('index'))
+    else:
+      flash("You don't have permission to edit this task. It's not yours!")
     return render_template('edit_task.html', todo=todo)

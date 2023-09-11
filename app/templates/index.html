@@ -52,7 +52,7 @@
                 <a href="{{ url_for('deletetask', id=todo.id) }}" class="btn btn-danger btn-sm">Delete Task</a>
             </td>
             <td>
-                {{ todo.timestamp.strftime('%d-%m-%Y %H:%M:%S') }} by {{todo.user_id}}
+                {{ todo.timestamp.strftime('%d-%m-%Y %H:%M:%S') }} by {{todo.author}}
             </td>
             </tr>
             {% endfor %}
@@ -83,7 +83,7 @@
                     <a href="{{ url_for('deletetask', id=todo.id) }}" class="btn btn-danger btn-sm">Delete Task</a>
                 </td>
                 <td>
-                    {{ todo.timestamp.strftime('%d-%m-%Y %H:%M:%S') }}
+                    {{ todo.timestamp.strftime('%d-%m-%Y %H:%M:%S') }} by {{todo.author}}
                 </td>
             </tr>
             {% endfor %}
