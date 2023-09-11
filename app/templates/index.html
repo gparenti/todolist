@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<h1>
+    {{ current_user.username }}'s ToDo-List!
+</h1>
+    {% if form %}
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.post.label }}<br>
+        {{ form.post(cols=32, rows=4) }}<br>
+        {% for error in form.post.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+    {% endif %}
+<div>
+    Add a new todo item:
+    <form action="{{ url_for('add') }}" method="POST">
+        <div class="col-auto">
+            <input type="text" name="todoitem" placeholder="keep your desk clean">
+            <input type="submit" value="Add Item" class="btn btn-dark">
+        </div>
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Status</th>
+            <th scope="col">Task</th>
+            <th scope="col">Actions</th>
+            <th scope="col">Task created:</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for todo in incomplete %}
+        <tr>
+            <td>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled><label class="form-check-label" for="flexCheckDisabled"></label>
+                </div>
+            </td>
+            <td>
+                {{ todo.body }}
+            </td>
+            <td>
+                <a href="{{ url_for('complete', id=todo.id) }}" class="btn btn-success btn-sm">Complete Task</a>
+                <a href="{{ url_for('edittask', id=todo.id) }}" class="btn btn-info btn-sm">Edit Task</a>
+                <a href="{{ url_for('deletetask', id=todo.id) }}" class="btn btn-danger btn-sm">Delete Task</a>
+            </td>
+            <td>
+                {{ todo.timestamp.strftime('%d-%m-%Y %H:%M:%S') }} by {{todo.user_id}}
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Status</th>
+                <th scope="col">Task</th>
+                <th scope="col">Actions</th>
+                <th scope="col">Task completed:</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in complete %}
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" checked disabled><label class="form-check-label" for="flexCheckCheckedDisabled"></label>
+                    </div>
+                </td>
+                <td>
+                    {{ todo.body }}
+                </td>
+                <td>
+                    <a href="{{ url_for('notcomplete', id=todo.id) }}" class="btn btn-warning btn-sm">Re-Open Task</a>
+                    <a href="{{ url_for('deletetask', id=todo.id) }}" class="btn btn-danger btn-sm">Delete Task</a>
+                </td>
+                <td>
+                    {{ todo.timestamp.strftime('%d-%m-%Y %H:%M:%S') }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endblock %}
