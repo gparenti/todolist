@@ -1,0 +1,2 @@
+docker build -t todo:latest .
+docker run --name todo -d -p 5000 --rm todo:latest
