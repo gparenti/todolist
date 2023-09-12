@@ -21,7 +21,7 @@ services:
 
   flask:
     build: .
-    container_name: flask
+    container_name: todoflask
     restart: always
     environment:
         - DATABASE_URL=mysql+pymysql://microblog:mysqlserver@dbserver/microblog
